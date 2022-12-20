@@ -6,9 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,9 +28,9 @@ public class OccupiedBlockServiceTest {
                         , new OccupiedBlockService.Coordinate(2, 1)
                         , new OccupiedBlockService.Coordinate(2, 2)
                         , new OccupiedBlockService.Coordinate(3, 2)
-                ), dimitris
+                )
         );
-        final OccupiedBlockService.OccupiedBlock occupiedBlock = occupiedBlockService.occupiedBlockGenerator(dimitris, new OccupiedBlockService.Coordinate(1, 1), OccupiedBlockService.Piece.T);
+        final OccupiedBlockService.OccupiedBlock occupiedBlock = occupiedBlockService.occupiedBlockGenerator(new OccupiedBlockService.Coordinate(1, 1), OccupiedBlockService.Piece.T);
 
         Assert.assertEquals(occupiedBlockExpected, occupiedBlock);
 
@@ -42,37 +40,29 @@ public class OccupiedBlockServiceTest {
                         , new OccupiedBlockService.Coordinate(6, 5)
                         , new OccupiedBlockService.Coordinate(6, 6)
                         , new OccupiedBlockService.Coordinate(7, 6)
-                ), fotis
+                )
         );
-        final OccupiedBlockService.OccupiedBlock occupiedBlock2 = occupiedBlockService.occupiedBlockGenerator(fotis, new OccupiedBlockService.Coordinate(5, 5), OccupiedBlockService.Piece.T);
+        final OccupiedBlockService.OccupiedBlock occupiedBlock2 = occupiedBlockService.occupiedBlockGenerator(new OccupiedBlockService.Coordinate(5, 5), OccupiedBlockService.Piece.T);
 
         Assert.assertEquals(occupiedBlockExpected2, occupiedBlock2);
-
-        List<OccupiedBlockService.OccupiedBlock> occupiedBlocks = new ArrayList<>();
-        occupiedBlocks.add(occupiedBlock);
-        occupiedBlocks.add(occupiedBlock2);
-        OccupiedBlockService.Board board = new OccupiedBlockService.Board(20, 20, occupiedBlocks);
-
-        occupiedBlockService.showCurrentBoardUI(board);
     }
 
     @Test
-    public void occupiedBlockGeneratorTest2() {
-        OccupiedBlockService.Player dimitris = new OccupiedBlockService.Player("Dimitris", 'D');
-        OccupiedBlockService.Player fotis = new OccupiedBlockService.Player("fotis", 'F');
+    public void occupiedBlockGeneratorTestShowUI() {
+        final OccupiedBlockService.Player dimitris = new OccupiedBlockService.Player("Dimitris", 'D');
+        final OccupiedBlockService.Player fotis = new OccupiedBlockService.Player("fotis", 'F');
 
-        final OccupiedBlockService.OccupiedBlock occupiedBlock = occupiedBlockService.occupiedBlockGenerator(dimitris, new OccupiedBlockService.Coordinate(1, 1), OccupiedBlockService.Piece.T);
+        final OccupiedBlockService.OccupiedBlock occupiedBlock = occupiedBlockService.occupiedBlockGenerator(new OccupiedBlockService.Coordinate(1, 1), OccupiedBlockService.Piece.T);
 
-        final OccupiedBlockService.OccupiedBlock occupiedBlock2 = occupiedBlockService.occupiedBlockGenerator(fotis, new OccupiedBlockService.Coordinate(5, 5), OccupiedBlockService.Piece.T);
+        final OccupiedBlockService.OccupiedBlock occupiedBlock2 = occupiedBlockService.occupiedBlockGenerator(new OccupiedBlockService.Coordinate(5, 5), OccupiedBlockService.Piece.T);
 
-        final OccupiedBlockService.OccupiedBlock occupiedBlock3 = occupiedBlockService.occupiedBlockGenerator(dimitris, new OccupiedBlockService.Coordinate(3, 3), OccupiedBlockService.Piece.I);
+        final OccupiedBlockService.OccupiedBlock occupiedBlock3 = occupiedBlockService.occupiedBlockGenerator(new OccupiedBlockService.Coordinate(3, 3), OccupiedBlockService.Piece.I);
 
+        dimitris.addOccupiedBlock(occupiedBlock);
+        fotis.addOccupiedBlock(occupiedBlock2);
+        dimitris.addOccupiedBlock(occupiedBlock3);
 
-        List<OccupiedBlockService.OccupiedBlock> occupiedBlocks = new ArrayList<>();
-        occupiedBlocks.add(occupiedBlock);
-        occupiedBlocks.add(occupiedBlock2);
-        occupiedBlocks.add(occupiedBlock3);
-        OccupiedBlockService.Board board = new OccupiedBlockService.Board(20, 20, occupiedBlocks);
+        OccupiedBlockService.Board board = new OccupiedBlockService.Board(20, 20, dimitris, fotis);
 
         occupiedBlockService.showCurrentBoardUI(board);
     }
