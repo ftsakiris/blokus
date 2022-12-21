@@ -13,4 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class OccupiedBlock {
     private List<Coordinate> coordinateList;
+
+    public boolean contains(Coordinate coordinate) {
+        return coordinateList.contains(coordinate);
+    }
 }

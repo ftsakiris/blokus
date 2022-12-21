@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,6 +44,14 @@ public enum Piece {
             .collect(Collectors.toList()));
 
     private List<Coordinate> coordinates;
+
+    public int getMaxX() {
+        return getCoordinates().stream().mapToInt(Coordinate::getX).max().orElseThrow(NoSuchElementException::new) + 1;
+    }
+
+    public int getMaxY() {
+        return getCoordinates().stream().mapToInt(Coordinate::getY).max().orElseThrow(NoSuchElementException::new) + 1;
+    }
 
 //        public List<Coordinate> rotateRight() {
 //

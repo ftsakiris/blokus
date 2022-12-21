@@ -21,15 +21,17 @@ public class OccupiedBlockServiceTest {
         final Player dimitris = new Player("Dimitris", 'D');
         final Player fotis = new Player("fotis", 'F');
 
-        Board board = new Board(20, 20, dimitris, fotis);
+        Board board = new Board(10, 10, dimitris, fotis);
 
         final OccupiedBlock occupiedBlock = occupiedBlockService.occupiedBlockGenerator(new Coordinate(0, 0), Piece.T);
-        final OccupiedBlock occupiedBlock2 = occupiedBlockService.occupiedBlockGenerator(new Coordinate(board.getSizeX() - 3, board.getSizeY() - 2), Piece.T);
+        final OccupiedBlock occupiedBlock2 = occupiedBlockService.occupiedBlockGeneratorDiagonal(new Coordinate(board.getSizeX() - 1, board.getSizeY() - 1), Piece.T);
         final OccupiedBlock occupiedBlock3 = occupiedBlockService.occupiedBlockGenerator(new Coordinate(2, 3), Piece.I);
+        final OccupiedBlock occupiedBlock4 = occupiedBlockService.occupiedBlockGeneratorDiagonal(new Coordinate(5, 5), Piece.I);
 
         dimitris.addOccupiedBlock(occupiedBlock);
-        dimitris.addOccupiedBlock(occupiedBlock2);
+        fotis.addOccupiedBlock(occupiedBlock2);
         dimitris.addOccupiedBlock(occupiedBlock3);
+        fotis.addOccupiedBlock(occupiedBlock4);
         occupiedBlockService.showCurrentBoardUI(board);
     }
 

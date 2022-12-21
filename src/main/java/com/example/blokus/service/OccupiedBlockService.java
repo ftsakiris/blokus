@@ -15,13 +15,39 @@ public class OccupiedBlockService {
     public OccupiedBlock occupiedBlockGenerator(Coordinate coordinate, Piece piece) {
         final List<Coordinate> coordinates = new ArrayList<>();
         final List<Coordinate> pieceCoordinates = new ArrayList<>(piece.getCoordinates());
-        pieceCoordinates.forEach(a -> coordinates.add(new Coordinate(a.getX() + coordinate.getX(), a.getY() + coordinate.getY())));
+        pieceCoordinates.forEach(a -> coordinates.add(new Coordinate(coordinate.getX() + a.getX(), coordinate.getY() + a.getY())));
+        return new OccupiedBlock(coordinates);
+    }
+
+    public OccupiedBlock occupiedBlockGeneratorDiagonal(Coordinate coordinate, Piece piece) {
+        final List<Coordinate> coordinates = new ArrayList<>();
+        final List<Coordinate> pieceCoordinates = new ArrayList<>(piece.getCoordinates());
+        pieceCoordinates.forEach(a -> coordinates.add(new Coordinate(coordinate.getX() - piece.getMaxX() + 1 + a.getX(), coordinate.getY() - piece.getMaxY() + 1 + a.getY())));
         return new OccupiedBlock(coordinates);
     }
 
     public List<Coordinate> findAvailableCoordinates(String playerName, Piece piece, Board board) {
         List<Coordinate> coordinates = new ArrayList<>();
         final List<OccupiedBlock> occupiedBlocks = board.getPlayer(playerName).getOccupiedBlocks();
+
+        // first player
+        if (occupiedBlocks.isEmpty() && !board.hasOccupiedBlocks()) {
+            final Coordinate coordinate = new Coordinate(0, 0);
+            final OccupiedBlock occupiedBlock = occupiedBlockGenerator(coordinate, piece);
+            if (occupiedBlock.contains(coordinate)) {
+                coordinates.add(coordinate);
+            }
+            return coordinates;
+        }
+        // second player
+        if (occupiedBlocks.isEmpty() && board.hasOccupiedBlocks()) {
+            final Coordinate coordinate = new Coordinate(board.getSizeX() - 1, board.getSizeY() - 1);
+            final OccupiedBlock occupiedBlock = occupiedBlockGenerator(coordinate, piece);
+            if (occupiedBlock.contains(coordinate)) {
+                coordinates.add(coordinate);
+            }
+            return coordinates;
+        }
         return coordinates;
     }
 
