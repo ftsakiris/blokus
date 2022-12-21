@@ -1,7 +1,6 @@
 package com.example.blokus.service;
 
 import com.example.blokus.domain.*;
-import com.example.blokus.service.OccupiedBlockService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

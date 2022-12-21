@@ -11,6 +11,6 @@ import java.util.List;
 @ToString
 @Getter
 @AllArgsConstructor
-public  class OccupiedBlock {
+public class OccupiedBlock {
     private List<Coordinate> coordinateList;
 }
