@@ -28,10 +28,10 @@ public class OccupiedBlockService {
 
     public List<Coordinate> findAvailableCoordinates(String playerName, Piece piece, Board board) {
         List<Coordinate> coordinates = new ArrayList<>();
-        final List<OccupiedBlock> occupiedBlocks = board.getPlayer(playerName).getOccupiedBlocks();
+        final List<OccupiedBlock> occupiedBlocksOfCurrentPlayer = board.getPlayer(playerName).getOccupiedBlocks();
 
-        // first player
-        if (occupiedBlocks.isEmpty() && !board.hasOccupiedBlocks()) {
+        // plays first
+        if (occupiedBlocksOfCurrentPlayer.isEmpty() && !board.hasOccupiedBlocks()) {
             final Coordinate coordinate = new Coordinate(0, 0);
             final OccupiedBlock occupiedBlock = occupiedBlockGenerator(coordinate, piece);
             if (occupiedBlock.contains(coordinate)) {
@@ -39,14 +39,22 @@ public class OccupiedBlockService {
             }
             return coordinates;
         }
-        // second player
-        if (occupiedBlocks.isEmpty() && board.hasOccupiedBlocks()) {
+        // plays second
+        if (occupiedBlocksOfCurrentPlayer.isEmpty() && board.hasOccupiedBlocks()) {
             final Coordinate coordinate = new Coordinate(board.getSizeX() - 1, board.getSizeY() - 1);
             final OccupiedBlock occupiedBlock = occupiedBlockGenerator(coordinate, piece);
             if (occupiedBlock.contains(coordinate)) {
                 coordinates.add(coordinate);
             }
             return coordinates;
+        }
+
+        for (OccupiedBlock occupiedBlock : occupiedBlocksOfCurrentPlayer) {
+            for (Coordinate coordinate : occupiedBlock.getCoordinateList()) {
+//                if (coordinate.getX() +) {
+//
+//                }
+            }
         }
         return coordinates;
     }

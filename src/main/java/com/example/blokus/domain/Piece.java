@@ -20,11 +20,11 @@ public enum Piece {
             )
             .collect(Collectors.toList())),
     I(Stream.of(
-                    new Coordinate(0, 1)
+                    new Coordinate(0, 0)
+                    , new Coordinate(0, 1)
                     , new Coordinate(0, 2)
                     , new Coordinate(0, 3)
                     , new Coordinate(0, 4)
-                    , new Coordinate(0, 5)
             )
             .collect(Collectors.toList())),
     G(Stream.of(

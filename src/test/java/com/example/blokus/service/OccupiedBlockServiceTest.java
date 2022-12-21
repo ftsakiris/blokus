@@ -23,15 +23,17 @@ public class OccupiedBlockServiceTest {
 
         Board board = new Board(10, 10, dimitris, fotis);
 
-        final OccupiedBlock occupiedBlock = occupiedBlockService.occupiedBlockGenerator(new Coordinate(0, 0), Piece.T);
-        final OccupiedBlock occupiedBlock2 = occupiedBlockService.occupiedBlockGeneratorDiagonal(new Coordinate(board.getSizeX() - 1, board.getSizeY() - 1), Piece.T);
-        final OccupiedBlock occupiedBlock3 = occupiedBlockService.occupiedBlockGenerator(new Coordinate(2, 3), Piece.I);
-        final OccupiedBlock occupiedBlock4 = occupiedBlockService.occupiedBlockGeneratorDiagonal(new Coordinate(5, 5), Piece.I);
+        Assert.assertTrue(occupiedBlockService.findAvailableCoordinates(dimitris.getName(), Piece.T, board).isEmpty());
+        Assert.assertEquals(new Coordinate(0, 0), occupiedBlockService.findAvailableCoordinates(dimitris.getName(), Piece.I, board).get(0));
+        dimitris.addOccupiedBlock(occupiedBlockService.occupiedBlockGenerator(new Coordinate(0, 0), Piece.I));
 
-        dimitris.addOccupiedBlock(occupiedBlock);
-        fotis.addOccupiedBlock(occupiedBlock2);
-        dimitris.addOccupiedBlock(occupiedBlock3);
-        fotis.addOccupiedBlock(occupiedBlock4);
+        Assert.assertEquals(new Coordinate(9, 9), occupiedBlockService.findAvailableCoordinates(fotis.getName(), Piece.I, board).get(0));
+        fotis.addOccupiedBlock(occupiedBlockService.occupiedBlockGeneratorDiagonal(new Coordinate(board.getSizeX() - 1, board.getSizeY() - 1), Piece.T));
+
+        Assert.assertEquals(new Coordinate(1, 5), occupiedBlockService.findAvailableCoordinates(dimitris.getName(), Piece.I, board).get(0));
+        dimitris.addOccupiedBlock(occupiedBlockService.occupiedBlockGenerator(new Coordinate(2, 3), Piece.I));
+        fotis.addOccupiedBlock(occupiedBlockService.occupiedBlockGeneratorDiagonal(new Coordinate(5, 5), Piece.I));
+
         occupiedBlockService.showCurrentBoardUI(board);
     }
 
