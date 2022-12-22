@@ -63,11 +63,20 @@ public class Board {
         return right && left && up && down;
     }
 
+    public boolean isValidOccupiedBlock(OccupiedBlock occupiedBlock) {
+        for (Coordinate coordinate : occupiedBlock.getCoordinateList()) {
+            if (!isValidCoordinate(coordinate)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean isValidCoordinate(Coordinate coordinate) {
         return !(
                 coordinate == null
-                        || coordinate.getX() <= 0
-                        || coordinate.getY() <= 0
+                        || coordinate.getX() < 0
+                        || coordinate.getY() < 0
                         || coordinate.getX() > getSizeX() - 1
                         || coordinate.getY() > getSizeY() - 1
         );

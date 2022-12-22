@@ -87,7 +87,7 @@ public class OccupiedBlockService {
         if (occupiedBlocksOfCurrentPlayer.isEmpty() && !board.hasOccupiedBlocks()) {
             final Coordinate coordinate = new Coordinate(0, 0);
             final OccupiedBlock occupiedBlock = occupiedBlockGenerator(coordinate, piece);
-            if (occupiedBlock.contains(coordinate)) {
+            if (board.isValidOccupiedBlock(occupiedBlock) && occupiedBlock.contains(coordinate)) {
                 return coordinate;
             }
         }
@@ -97,8 +97,8 @@ public class OccupiedBlockService {
     private Coordinate secondMove(List<OccupiedBlock> occupiedBlocksOfCurrentPlayer, Piece piece, Board board) {
         if (occupiedBlocksOfCurrentPlayer.isEmpty() && board.hasOccupiedBlocks()) {
             final Coordinate coordinate = new Coordinate(board.getSizeX() - 1, board.getSizeY() - 1);
-            final OccupiedBlock occupiedBlock = occupiedBlockGenerator(coordinate, piece);
-            if (occupiedBlock.contains(coordinate)) {
+            final OccupiedBlock occupiedBlock = occupiedBlockGeneratorDiagonal(coordinate, piece);
+            if (board.isValidOccupiedBlock(occupiedBlock) && occupiedBlock.contains(coordinate)) {
                 return coordinate;
             }
         }

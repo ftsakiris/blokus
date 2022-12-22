@@ -32,6 +32,14 @@ public class OccupiedBlockServiceTest {
         occupiedBlockService.showCurrentBoardUI(board);
     }
 
+    @Test(expected = BlokusException.class)
+    public void moveTestNoOk() throws BlokusException {
+        final Player dimitris = new Player("Dimitris", 'D');
+        final Player fotis = new Player("fotis", 'F');
+        Board board = new Board(20, 20, dimitris, fotis);
+        occupiedBlockService.move(dimitris.getName(), Piece.T, board);
+    }
+
     @Test
     public void findAvailableCoordinatesTest() {
         final Player dimitris = new Player("Dimitris", 'D');
