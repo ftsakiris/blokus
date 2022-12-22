@@ -37,4 +37,8 @@ public class Player {
     public boolean hasOccupiedBlock(Coordinate coordinate) {
         return getOccupiedCoordinates().contains(coordinate);
     }
+
+    public boolean hasFirstMove() {
+        return hasOccupiedBlock(new Coordinate(0, 0));
+    }
 }

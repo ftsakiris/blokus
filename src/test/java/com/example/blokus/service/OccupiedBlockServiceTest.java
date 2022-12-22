@@ -16,6 +16,22 @@ public class OccupiedBlockServiceTest {
     @InjectMocks
     private OccupiedBlockService occupiedBlockService;
 
+
+    @Test
+    public void moveTest() throws BlokusException {
+        final Player dimitris = new Player("Dimitris", 'D');
+        final Player fotis = new Player("fotis", 'F');
+
+        Board board = new Board(20, 20, dimitris, fotis);
+
+        occupiedBlockService.move(dimitris.getName(), Piece.I, board);
+        occupiedBlockService.move(fotis.getName(), Piece.I, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.T, board);
+        occupiedBlockService.move(fotis.getName(), Piece.T, board);
+
+        occupiedBlockService.showCurrentBoardUI(board);
+    }
+
     @Test
     public void findAvailableCoordinatesTest() {
         final Player dimitris = new Player("Dimitris", 'D');
@@ -68,7 +84,7 @@ public class OccupiedBlockServiceTest {
     }
 
     @Test
-    public void occupiedBlockGeneratorTestShowUI() {
+    public void occupiedBlockGeneratorShowUITest() {
         final Player dimitris = new Player("Dimitris", 'D');
         final Player fotis = new Player("fotis", 'F');
 

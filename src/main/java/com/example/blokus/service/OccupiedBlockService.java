@@ -1,9 +1,6 @@
 package com.example.blokus.service;
 
-import com.example.blokus.domain.Board;
-import com.example.blokus.domain.Coordinate;
-import com.example.blokus.domain.OccupiedBlock;
-import com.example.blokus.domain.Piece;
+import com.example.blokus.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +8,34 @@ import java.util.List;
 
 @Service
 public class OccupiedBlockService {
+
+    public void move(String playerName, Piece piece, Coordinate coordinate, Board board) throws BlokusException {
+        final Player player = board.getPlayer(playerName);
+        if (player == null) {
+            throw new BlokusException("Player does not exist");
+        }
+        final List<Coordinate> availableCoordinates = findAvailableCoordinates(playerName, piece, board);
+        if (!availableCoordinates.contains(coordinate)) {
+            throw new BlokusException("This coordinate is not available");
+        }
+        if (!board.isGameStarted() || player.hasFirstMove()) {
+            player.addOccupiedBlock(occupiedBlockGenerator(coordinate, piece));
+            return;
+        }
+        player.addOccupiedBlock(occupiedBlockGeneratorDiagonal(coordinate, piece));
+    }
+
+    public void move(String playerName, Piece piece, Board board) throws BlokusException {
+        final Player player = board.getPlayer(playerName);
+        if (player == null) {
+            throw new BlokusException("Player does not exist");
+        }
+        final List<Coordinate> availableCoordinates = findAvailableCoordinates(playerName, piece, board);
+        if (availableCoordinates.isEmpty()) {
+            throw new BlokusException("No available coordinates for this Piece " + piece);
+        }
+        move(playerName, piece, availableCoordinates.get(0), board);
+    }
 
     public OccupiedBlock occupiedBlockGenerator(Coordinate coordinate, Piece piece) {
         final List<Coordinate> coordinates = new ArrayList<>();

@@ -13,10 +13,10 @@ import java.util.stream.Stream;
 public enum Piece {
 
     T(Stream.of(
-                    new Coordinate(0, 1)
+                    new Coordinate(0, 0)
+                    , new Coordinate(1, -1)
                     , new Coordinate(1, 0)
-                    , new Coordinate(1, 1)
-                    , new Coordinate(2, 1)
+                    , new Coordinate(2, 0)
             )
             .collect(Collectors.toList())),
     I(Stream.of(

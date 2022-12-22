@@ -46,6 +46,10 @@ public class Board {
         return !getOccupiedBlocks().isEmpty();
     }
 
+    public boolean isGameStarted() {
+        return hasOccupiedBlocks();
+    }
+
     public boolean isOccupiedCoordinate(Coordinate coordinate) {
         return getOccupiedCoordinates().contains(coordinate);
     }
