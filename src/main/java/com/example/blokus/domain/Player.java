@@ -26,4 +26,15 @@ public class Player {
     public void addOccupiedBlock(OccupiedBlock occupiedBlock) {
         occupiedBlocks.add(occupiedBlock);
     }
+
+    public List<Coordinate> getOccupiedCoordinates() {
+        final List<OccupiedBlock> occupiedBlocks = getOccupiedBlocks();
+        List<Coordinate> coordinates = new ArrayList<>();
+        occupiedBlocks.forEach(a -> coordinates.addAll(a.getCoordinateList()));
+        return coordinates;
+    }
+
+    public boolean hasOccupiedBlock(Coordinate coordinate) {
+        return getOccupiedCoordinates().contains(coordinate);
+    }
 }

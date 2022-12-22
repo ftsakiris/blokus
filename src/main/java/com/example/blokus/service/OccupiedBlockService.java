@@ -27,36 +27,63 @@ public class OccupiedBlockService {
     }
 
     public List<Coordinate> findAvailableCoordinates(String playerName, Piece piece, Board board) {
-        List<Coordinate> coordinates = new ArrayList<>();
+        List<Coordinate> resultCoordinates = new ArrayList<>();
         final List<OccupiedBlock> occupiedBlocksOfCurrentPlayer = board.getPlayer(playerName).getOccupiedBlocks();
 
         // plays first
-        if (occupiedBlocksOfCurrentPlayer.isEmpty() && !board.hasOccupiedBlocks()) {
-            final Coordinate coordinate = new Coordinate(0, 0);
-            final OccupiedBlock occupiedBlock = occupiedBlockGenerator(coordinate, piece);
-            if (occupiedBlock.contains(coordinate)) {
-                coordinates.add(coordinate);
-            }
-            return coordinates;
+        final Coordinate coordinateFirstPlayer = firstMove(occupiedBlocksOfCurrentPlayer, piece, board);
+        if (coordinateFirstPlayer != null) {
+            resultCoordinates.add(coordinateFirstPlayer);
+            return resultCoordinates;
         }
         // plays second
-        if (occupiedBlocksOfCurrentPlayer.isEmpty() && board.hasOccupiedBlocks()) {
-            final Coordinate coordinate = new Coordinate(board.getSizeX() - 1, board.getSizeY() - 1);
-            final OccupiedBlock occupiedBlock = occupiedBlockGenerator(coordinate, piece);
-            if (occupiedBlock.contains(coordinate)) {
-                coordinates.add(coordinate);
-            }
-            return coordinates;
+        final Coordinate coordinateSecondPlayer = secondMove(occupiedBlocksOfCurrentPlayer, piece, board);
+        if (coordinateSecondPlayer != null) {
+            resultCoordinates.add(coordinateSecondPlayer);
+            return resultCoordinates;
         }
 
         for (OccupiedBlock occupiedBlock : occupiedBlocksOfCurrentPlayer) {
             for (Coordinate coordinate : occupiedBlock.getCoordinateList()) {
-//                if (coordinate.getX() +) {
-//
-//                }
+                final Coordinate coordinateUpRight = new Coordinate(coordinate.getX() + 1, coordinate.getY() + 1);
+                addNewAvailableCoordinate(board, coordinateUpRight, playerName, resultCoordinates);
+                final Coordinate coordinateDownRight = new Coordinate(coordinate.getX() + 1, coordinate.getY() - 1);
+                addNewAvailableCoordinate(board, coordinateDownRight, playerName, resultCoordinates);
+                final Coordinate coordinateUpLeft = new Coordinate(coordinate.getX() - 1, coordinate.getY() + 1);
+                addNewAvailableCoordinate(board, coordinateUpLeft, playerName, resultCoordinates);
+                final Coordinate coordinateDownLeft = new Coordinate(coordinate.getX() - 1, coordinate.getY() - 1);
+                addNewAvailableCoordinate(board, coordinateDownLeft, playerName, resultCoordinates);
             }
         }
-        return coordinates;
+        return resultCoordinates;
+    }
+
+    private Coordinate firstMove(List<OccupiedBlock> occupiedBlocksOfCurrentPlayer, Piece piece, Board board) {
+        if (occupiedBlocksOfCurrentPlayer.isEmpty() && !board.hasOccupiedBlocks()) {
+            final Coordinate coordinate = new Coordinate(0, 0);
+            final OccupiedBlock occupiedBlock = occupiedBlockGenerator(coordinate, piece);
+            if (occupiedBlock.contains(coordinate)) {
+                return coordinate;
+            }
+        }
+        return null;
+    }
+
+    private Coordinate secondMove(List<OccupiedBlock> occupiedBlocksOfCurrentPlayer, Piece piece, Board board) {
+        if (occupiedBlocksOfCurrentPlayer.isEmpty() && board.hasOccupiedBlocks()) {
+            final Coordinate coordinate = new Coordinate(board.getSizeX() - 1, board.getSizeY() - 1);
+            final OccupiedBlock occupiedBlock = occupiedBlockGenerator(coordinate, piece);
+            if (occupiedBlock.contains(coordinate)) {
+                return coordinate;
+            }
+        }
+        return null;
+    }
+
+    private void addNewAvailableCoordinate(Board board, Coordinate coordinate, String playerName, List<Coordinate> resultCoordinates) {
+        if (board.isValidCoordinate(coordinate) && !board.isOccupiedCoordinate(coordinate) && board.checkCrossForOccupiedCoordinates(coordinate, playerName)) {
+            resultCoordinates.add(coordinate);
+        }
     }
 
     public void showCurrentBoardUI(Board board) {

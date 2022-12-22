@@ -30,9 +30,11 @@ public class OccupiedBlockServiceTest {
         Assert.assertEquals(new Coordinate(9, 9), occupiedBlockService.findAvailableCoordinates(fotis.getName(), Piece.I, board).get(0));
         fotis.addOccupiedBlock(occupiedBlockService.occupiedBlockGeneratorDiagonal(new Coordinate(board.getSizeX() - 1, board.getSizeY() - 1), Piece.T));
 
+        final Coordinate availableCoordinate = occupiedBlockService.findAvailableCoordinates(dimitris.getName(), Piece.I, board).get(0);
         Assert.assertEquals(new Coordinate(1, 5), occupiedBlockService.findAvailableCoordinates(dimitris.getName(), Piece.I, board).get(0));
-        dimitris.addOccupiedBlock(occupiedBlockService.occupiedBlockGenerator(new Coordinate(2, 3), Piece.I));
-        fotis.addOccupiedBlock(occupiedBlockService.occupiedBlockGeneratorDiagonal(new Coordinate(5, 5), Piece.I));
+        dimitris.addOccupiedBlock(occupiedBlockService.occupiedBlockGenerator(availableCoordinate, Piece.I));
+
+        fotis.addOccupiedBlock(occupiedBlockService.occupiedBlockGeneratorDiagonal(occupiedBlockService.findAvailableCoordinates(fotis.getName(), Piece.I, board).get(1), Piece.I));
 
         occupiedBlockService.showCurrentBoardUI(board);
     }
