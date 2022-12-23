@@ -18,11 +18,12 @@ public class OccupiedBlockService {
         if (!availableCoordinates.contains(coordinate)) {
             throw new BlokusException("This coordinate is not available");
         }
-        if (!board.isGameStarted() || player.hasFirstMove()) {
-            player.addOccupiedBlock(occupiedBlockGenerator(coordinate, piece));
-            return;
+
+        final List<OccupiedBlock> occupiedBlocks = occupiedPossibleBlocksGenerator(coordinate, piece, board);
+        if (occupiedBlocks.isEmpty()) {
+            throw new BlokusException("No available block");
         }
-        player.addOccupiedBlock(occupiedBlockGeneratorDiagonal(coordinate, piece));
+        player.addOccupiedBlock(occupiedBlocks.get(0));
     }
 
     public void move(String playerName, Piece piece, Board board) throws BlokusException {
@@ -35,6 +36,31 @@ public class OccupiedBlockService {
             throw new BlokusException("No available coordinates for this Piece " + piece);
         }
         move(playerName, piece, availableCoordinates.get(0), board);
+    }
+
+    public List<OccupiedBlock> occupiedPossibleBlocksGenerator(Coordinate coordinate, Piece piece, Board board) {
+        List<OccupiedBlock> occupiedBlocks = new ArrayList<>();
+        for (int i = 0; i < piece.getMaxX(); i++) {
+            final OccupiedBlock occupiedBlockLeft = occupiedBlockGenerator(new Coordinate(coordinate.getX() - i, coordinate.getY()), piece);
+            if (board.isValidOccupiedBlock(occupiedBlockLeft)) {
+                occupiedBlocks.add(occupiedBlockLeft);
+            }
+            final OccupiedBlock occupiedBlockRight = occupiedBlockGenerator(new Coordinate(coordinate.getX() - i, coordinate.getY()), piece);
+            if (board.isValidOccupiedBlock(occupiedBlockRight)) {
+                occupiedBlocks.add(occupiedBlockRight);
+            }
+        }
+        for (int i = 0; i < piece.getMaxY(); i++) {
+            final OccupiedBlock occupiedBlockDown = occupiedBlockGenerator(new Coordinate(coordinate.getX(), coordinate.getY() - i), piece);
+            if (board.isValidOccupiedBlock(occupiedBlockDown)) {
+                occupiedBlocks.add(occupiedBlockDown);
+            }
+            final OccupiedBlock occupiedBlockUp = occupiedBlockGenerator(new Coordinate(coordinate.getX(), coordinate.getY() + i), piece);
+            if (board.isValidOccupiedBlock(occupiedBlockUp)) {
+                occupiedBlocks.add(occupiedBlockUp);
+            }
+        }
+        return occupiedBlocks;
     }
 
     public OccupiedBlock occupiedBlockGenerator(Coordinate coordinate, Piece piece) {
@@ -53,7 +79,8 @@ public class OccupiedBlockService {
 
     public List<Coordinate> findAvailableCoordinates(String playerName, Piece piece, Board board) {
         List<Coordinate> resultCoordinates = new ArrayList<>();
-        final List<OccupiedBlock> occupiedBlocksOfCurrentPlayer = board.getPlayer(playerName).getOccupiedBlocks();
+        final Player player = board.getPlayer(playerName);
+        final List<OccupiedBlock> occupiedBlocksOfCurrentPlayer = player.getOccupiedBlocks();
 
         // plays first
         final Coordinate coordinateFirstPlayer = firstMove(occupiedBlocksOfCurrentPlayer, piece, board);
@@ -68,6 +95,12 @@ public class OccupiedBlockService {
             return resultCoordinates;
         }
 
+        addAllAvailableCoordinate(playerName, board, resultCoordinates, occupiedBlocksOfCurrentPlayer);
+
+        return resultCoordinates;
+    }
+
+    private void addAllAvailableCoordinate(String playerName, Board board, List<Coordinate> resultCoordinates, List<OccupiedBlock> occupiedBlocksOfCurrentPlayer) {
         for (OccupiedBlock occupiedBlock : occupiedBlocksOfCurrentPlayer) {
             for (Coordinate coordinate : occupiedBlock.getCoordinateList()) {
                 final Coordinate coordinateUpRight = new Coordinate(coordinate.getX() + 1, coordinate.getY() + 1);
@@ -80,7 +113,6 @@ public class OccupiedBlockService {
                 addNewAvailableCoordinate(board, coordinateDownLeft, playerName, resultCoordinates);
             }
         }
-        return resultCoordinates;
     }
 
     private Coordinate firstMove(List<OccupiedBlock> occupiedBlocksOfCurrentPlayer, Piece piece, Board board) {
@@ -106,7 +138,7 @@ public class OccupiedBlockService {
     }
 
     private void addNewAvailableCoordinate(Board board, Coordinate coordinate, String playerName, List<Coordinate> resultCoordinates) {
-        if (board.isValidCoordinate(coordinate) && !board.isOccupiedCoordinate(coordinate) && board.checkCrossForOccupiedCoordinates(coordinate, playerName)) {
+        if (board.isValidCoordinate(coordinate) && !board.isOccupiedCoordinate(coordinate) && board.isValidCrossForOccupiedCoordinates(coordinate, playerName)) {
             resultCoordinates.add(coordinate);
         }
     }

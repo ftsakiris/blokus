@@ -54,7 +54,7 @@ public class Board {
         return getOccupiedCoordinates().contains(coordinate);
     }
 
-    public boolean checkCrossForOccupiedCoordinates(Coordinate coordinate, String playerName) {
+    public boolean isValidCrossForOccupiedCoordinates(Coordinate coordinate, String playerName) {
         final Player player = getPlayer(playerName);
         final boolean right = !player.hasOccupiedBlock(new Coordinate(coordinate.getX() + 1, coordinate.getY()));
         final boolean left = !player.hasOccupiedBlock(new Coordinate(coordinate.getX() - 1, coordinate.getY()));
@@ -63,9 +63,17 @@ public class Board {
         return right && left && up && down;
     }
 
+    public boolean isValidCrossForOccupiedCoordinates(Coordinate coordinate) {
+        final boolean right = !isOccupiedCoordinate(new Coordinate(coordinate.getX() + 1, coordinate.getY()));
+        final boolean left = !isOccupiedCoordinate(new Coordinate(coordinate.getX() - 1, coordinate.getY()));
+        final boolean up = !isOccupiedCoordinate(new Coordinate(coordinate.getX(), coordinate.getY() + 1));
+        final boolean down = !isOccupiedCoordinate(new Coordinate(coordinate.getX(), coordinate.getY() - 1));
+        return right && left && up && down;
+    }
+
     public boolean isValidOccupiedBlock(OccupiedBlock occupiedBlock) {
         for (Coordinate coordinate : occupiedBlock.getCoordinateList()) {
-            if (!isValidCoordinate(coordinate)) {
+            if (!isValidCoordinate(coordinate) || !isValidCrossForOccupiedCoordinates(coordinate)) {
                 return false;
             }
         }
