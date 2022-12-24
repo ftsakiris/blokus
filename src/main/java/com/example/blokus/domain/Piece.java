@@ -3,6 +3,7 @@ package com.example.blokus.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -53,7 +54,13 @@ public enum Piece {
         return getCoordinates().stream().mapToInt(Coordinate::getY).max().orElseThrow(NoSuchElementException::new) + 1;
     }
 
-//        public List<Coordinate> rotateRight() {
-//
-//        }
+    //TODO fix this shit
+    public List<Coordinate> rotateRight() {
+        final List<Coordinate> coordinatesCurrent = getCoordinates();
+        final List<Coordinate> coordinatesRotated = new ArrayList<>();
+        for (Coordinate coordinate : coordinatesCurrent) {
+            coordinatesRotated.add(new Coordinate(coordinate.getY(), coordinate.getX()));
+        }
+        return coordinatesRotated;
+    }
 }
