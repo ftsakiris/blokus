@@ -19,7 +19,10 @@ public class OccupiedBlockService {
             throw new BlokusException("This coordinate is not available");
         }
 
-        final List<OccupiedBlock> occupiedBlocks = occupiedPossibleBlocksGenerator(coordinate, piece, board);
+        final List<OccupiedBlock> occupiedBlocks = new ArrayList<>();
+        for (Coordinate availableCoordinate : availableCoordinates) {
+            occupiedBlocks.addAll(occupiedPossibleBlocksGenerator(availableCoordinate, piece, board));
+        }
         if (occupiedBlocks.isEmpty()) {
             throw new BlokusException("No available block");
         }
@@ -40,27 +43,35 @@ public class OccupiedBlockService {
 
     public List<OccupiedBlock> occupiedPossibleBlocksGenerator(Coordinate coordinate, Piece piece, Board board) {
         List<OccupiedBlock> occupiedBlocks = new ArrayList<>();
-        for (int i = 0; i < piece.getMaxX(); i++) {
-            final OccupiedBlock occupiedBlockLeft = occupiedBlockGenerator(new Coordinate(coordinate.getX() - i, coordinate.getY()), piece);
-            if (board.isValidOccupiedBlock(occupiedBlockLeft)) {
-                occupiedBlocks.add(occupiedBlockLeft);
-            }
-            final OccupiedBlock occupiedBlockRight = occupiedBlockGenerator(new Coordinate(coordinate.getX() - i, coordinate.getY()), piece);
-            if (board.isValidOccupiedBlock(occupiedBlockRight)) {
-                occupiedBlocks.add(occupiedBlockRight);
-            }
+        createBlock(piece, board, occupiedBlocks, coordinate.getX(), coordinate.getY());
+        createBlockDiagonal(piece, board, occupiedBlocks, coordinate.getX(), coordinate.getY());
+        for (int i = 1; i < piece.getMaxX(); i++) {
+            createBlock(piece, board, occupiedBlocks, coordinate.getX() - i, coordinate.getY());
+            createBlock(piece, board, occupiedBlocks, coordinate.getX() - i, coordinate.getY());
+            createBlockDiagonal(piece, board, occupiedBlocks, coordinate.getX() - i, coordinate.getY());
+            createBlockDiagonal(piece, board, occupiedBlocks, coordinate.getX() - i, coordinate.getY());
         }
-        for (int i = 0; i < piece.getMaxY(); i++) {
-            final OccupiedBlock occupiedBlockDown = occupiedBlockGenerator(new Coordinate(coordinate.getX(), coordinate.getY() - i), piece);
-            if (board.isValidOccupiedBlock(occupiedBlockDown)) {
-                occupiedBlocks.add(occupiedBlockDown);
-            }
-            final OccupiedBlock occupiedBlockUp = occupiedBlockGenerator(new Coordinate(coordinate.getX(), coordinate.getY() + i), piece);
-            if (board.isValidOccupiedBlock(occupiedBlockUp)) {
-                occupiedBlocks.add(occupiedBlockUp);
-            }
+        for (int i = 1; i < piece.getMaxY(); i++) {
+            createBlock(piece, board, occupiedBlocks, coordinate.getX(), coordinate.getY() - i);
+            createBlock(piece, board, occupiedBlocks, coordinate.getX(), coordinate.getY() + i);
+            createBlockDiagonal(piece, board, occupiedBlocks, coordinate.getX(), coordinate.getY() - i);
+            createBlockDiagonal(piece, board, occupiedBlocks, coordinate.getX(), coordinate.getY() + i);
         }
         return occupiedBlocks;
+    }
+
+    private void createBlock(Piece piece, Board board, List<OccupiedBlock> occupiedBlocks, int x, int y) {
+        final OccupiedBlock occupiedBlock = occupiedBlockGenerator(new Coordinate(x, y), piece);
+        if (board.isValidOccupiedBlock(occupiedBlock)) {
+            occupiedBlocks.add(occupiedBlock);
+        }
+    }
+
+    private void createBlockDiagonal(Piece piece, Board board, List<OccupiedBlock> occupiedBlocks, int x, int y) {
+        final OccupiedBlock occupiedBlock = occupiedBlockGeneratorDiagonal(new Coordinate(x, y), piece);
+        if (board.isValidOccupiedBlock(occupiedBlock)) {
+            occupiedBlocks.add(occupiedBlock);
+        }
     }
 
     public OccupiedBlock occupiedBlockGenerator(Coordinate coordinate, Piece piece) {

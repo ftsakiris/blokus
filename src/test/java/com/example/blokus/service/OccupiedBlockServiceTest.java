@@ -31,15 +31,28 @@ public class OccupiedBlockServiceTest {
         occupiedBlockService.move(dimitris.getName(), Piece.G, board);
         occupiedBlockService.move(fotis.getName(), Piece.G2, board);
         occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
-//        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
-//        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
-//        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
-//        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
-//        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
-//        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
-//        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
-//        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
-
+        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
+        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
+        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
+        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
+        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
+        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
+        occupiedBlockService.move(fotis.getName(), Piece.T, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.T, board);
+        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
+        occupiedBlockService.move(fotis.getName(), Piece.T, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.T, board);
+        occupiedBlockService.move(fotis.getName(), Piece.G2, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.G2, board);
+        occupiedBlockService.move(fotis.getName(), Piece.T, board);
+        occupiedBlockService.move(dimitris.getName(), Piece.T, board);
 
         occupiedBlockService.showCurrentBoardUI(board);
     }
