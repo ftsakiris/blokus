@@ -55,11 +55,11 @@ public enum Piece {
     }
 
     //TODO fix this shit
-    public List<Coordinate> rotateRight() {
+    public List<Coordinate> rotateLeft() {
         final List<Coordinate> coordinatesCurrent = getCoordinates();
         final List<Coordinate> coordinatesRotated = new ArrayList<>();
         for (Coordinate coordinate : coordinatesCurrent) {
-            coordinatesRotated.add(new Coordinate(coordinate.getY(), coordinate.getX()));
+            coordinatesRotated.add(new Coordinate(getMaxX() / 2, getMaxY() / 2));
         }
         return coordinatesRotated;
     }

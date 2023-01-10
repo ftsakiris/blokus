@@ -23,7 +23,7 @@ public class PieceTest {
     }
 
     @Test
-    public void rotateRight() {
+    public void rotateLeftTest() {
         Assert.assertEquals(Stream.of(
                         new Coordinate(0, 1)
                         , new Coordinate(0, 0)
@@ -31,6 +31,6 @@ public class PieceTest {
                         , new Coordinate(2, 0)
                         , new Coordinate(3, 0)
                 )
-                .collect(Collectors.toList()), Piece.G2.rotateRight());
+                .collect(Collectors.toList()), Piece.G2.rotateLeft());
     }
 }
